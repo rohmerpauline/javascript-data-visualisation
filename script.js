@@ -5,7 +5,7 @@ let table1LabelRetrieve = document.getElementsByTagName("th");
 
 // ARRAY with the years labels
 let table1YearLabels = []; 
-for (i=5; i <=15; i++){
+for (let i=5; i <=15; i++){
     table1YearLabels.push(table1LabelRetrieve[i].textContent);
 }
 
@@ -14,7 +14,7 @@ let table1DataRetrieve = document.getElementById("table1").querySelectorAll("td"
 
 let tabledate = document.getElementsByTagName("td");
 
-for (i=0; i<tabledate.length; i++) {
+for (let i=0; i<tabledate.length; i++) {
     let tablechange = document.getElementsByTagName("td")[i].innerHTML;
     newtable = tablechange.replace("," , ".");
 
@@ -24,7 +24,7 @@ for (i=0; i<tabledate.length; i++) {
 // ARRAY with all the table datas
 let table1AllData = []; 
 
-for (i=0; i<table1DataRetrieve.length; i++) {
+for (let i=0; i<table1DataRetrieve.length; i++) {
     table1AllData.push(table1DataRetrieve[i].textContent)
 } 
 
@@ -34,12 +34,12 @@ let table1Rows = new Array(Math.ceil(table1AllData.length / n)).fill().map(_=> t
 
 //ARRAY with the countries name 
 let table1labelCountry = [];
-for(i=0; i<table1Rows.length; i++) {
+for(let i=0; i<table1Rows.length; i++) {
     table1labelCountry.push(table1Rows[i][0]);
 };
 
 // Retrieve the countries name from the table1Rows 
-for (i=0; i<table1Rows.length; i++) {
+for (let i=0; i<table1Rows.length; i++) {
     table1Rows[i].shift();
 };
 
@@ -272,7 +272,7 @@ document.getElementById("table2").querySelectorAll("td")[21].innerHTML = "Englan
 // ARRAY with all the table datas
 let table2AllData = []; 
 
-for (i=0; i<table2DataRetrieve.length; i++) {
+for (let i=0; i<table2DataRetrieve.length; i++) {
     table2AllData.push(table2DataRetrieve[i].textContent)
 } 
 
@@ -284,7 +284,7 @@ let table2Rows = new Array(Math.ceil(table2AllData.length / m)).fill().map(_=> t
 let table2LabelCountry = []; // Only countries names
 let table2Year1Data = []; // Only data from 2007-09
 let table2Year2Data = []; // Only data from 2010-12
-for(i=0; i<table2Rows.length; i++) {
+for(let i=0; i<table2Rows.length; i++) {
     table2LabelCountry.push(table2Rows[i][0]);
     table2Year1Data.push(table2Rows[i][1]);
     table2Year2Data.push(table2Rows[i][2]);
@@ -326,16 +326,11 @@ let graphTable2 = document.getElementById("graphTable2").getContext("2d");
         let xAxis = [];
         let yAxis = [];
         let arrayIndex;
-        let xhttp
-
-        function updateChart () {
-            xhttp.open("GET", "https://canvasjs.com/services/data/datapoints.php", true);
-            setTimeout(function(){updateChart()}, 1000);
-        }
+        let updateChart = 0;
 
         function makeChart () {
-            xhttp = new XMLHttpRequest();
-            xhttp.open("GET", "https://canvasjs.com/services/data/datapoints.php", true);
+            let xhttp = new XMLHttpRequest();
+            xhttp.open("GET", "https://canvasjs.com/services/data/datapoints.php?ystart="+(updateChart=updateChart+1), true);
         console.log(xhttp);
         xhttp.onreadystatechange = function () {
             if (this.status == 200 && this.readyState == 4) {
@@ -353,6 +348,7 @@ let graphTable2 = document.getElementById("graphTable2").getContext("2d");
                         labels: dataLabels,
                         datasets : [{
                             backgroundColor : "#ef7e43",
+                            label : "Live Update",
                             data: dataInfo,
                             fill : false,
                             borderColor : "#ef7e43"
@@ -365,7 +361,7 @@ let graphTable2 = document.getElementById("graphTable2").getContext("2d");
             } 
         }
         xhttp.send();
-        setTimeout(function(){makeChart()}, 1000);
+        setTimeout(function(){makeChart()}, 2000);
         }
         
         makeChart();
