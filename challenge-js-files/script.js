@@ -236,13 +236,21 @@ graphTable1.height = 1500;
                 display: true,
                 text: 'Table 1: Offences recorded by the police, 2002-12'
             }, 
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        stepSize: 500,
-                    }
-                }]
-            },
+                scales: {
+                    yAxes: [{
+                        /* type : "logarithmic", */
+                        ticks: {
+                            stepSize: 500,
+                            /* min : 0,
+                            max : 8000,
+                            callback: function (value, index, values) {
+                                if (index % 5 == 0) {
+                                    return value;
+                                }
+                            } */
+                        }
+                    }]
+                },
         }
     });
 
@@ -313,3 +321,56 @@ let graphTable2 = document.getElementById("graphTable2").getContext("2d");
 
     let graph3Array = document.getElementById("graph3").getContext("2d");
 
+/*     function loadText () { */
+
+        let xAxis = [];
+        let yAxis = [];
+        let arrayIndex;
+        let xhttp
+
+        function updateChart () {
+            xhttp.open("GET", "https://canvasjs.com/services/data/datapoints.php", true);
+            setTimeout(function(){updateChart()}, 1000);
+        }
+
+        function makeChart () {
+            xhttp = new XMLHttpRequest();
+            xhttp.open("GET", "https://canvasjs.com/services/data/datapoints.php", true);
+        console.log(xhttp);
+        xhttp.onreadystatechange = function () {
+            if (this.status == 200 && this.readyState == 4) {
+                let data = JSON.parse(this.responseText);
+                let dataLabels = data.map(function(e) {
+                    return e[0];
+                });
+                let dataInfo = data.map(function(e) {
+                    return e[1];
+                });
+
+                let graphLineTable3 = new Chart(graph3Array, {
+                    type: "line",
+                    data : {            
+                        labels: dataLabels,
+                        datasets : [{
+                            backgroundColor : "#ef7e43",
+                            data: dataInfo,
+                            fill : false,
+                            borderColor : "#ef7e43"
+                        }, 
+                    ]}, 
+                });
+
+                console.log(dataLabels);
+                console.log(dataInfo);
+            } 
+        }
+        xhttp.send();
+        setTimeout(function(){makeChart()}, 1000);
+        }
+        
+        makeChart();
+
+/*         setTimeout(function(){updateChart()}, 1000); */
+
+
+        
